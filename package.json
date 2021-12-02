@@ -1,0 +1,43 @@
+{
+  "name": "yardsale",
+  "version": "1.0.0",
+  "description": "this is a ecommerce software",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc index.ts && nodemon index.js",
+    "start": "tsc index.ts && node index.js",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nelsonalejandro/yardsale.git"
+  },
+  "keywords": [
+    "yard",
+    "sale",
+    "ecommerce",
+    "typescript",
+    "javascript"
+  ],
+  "author": "Nelson Ramos",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/nelsonalejandro/yardsale/issues"
+  },
+  "homepage": "https://github.com/nelsonalejandro/yardsale#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15",
+    "prettier": "^2.5.0"
+  },
+  "dependencies": {
+    "@hapi/boom": "^9.1.4",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "faker": "^5.5.3",
+    "joi": "^17.5.0"
+  }
+}
