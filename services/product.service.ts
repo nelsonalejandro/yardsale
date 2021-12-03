@@ -1,5 +1,5 @@
-const faker = require('faker')
-const boom = require('@hapi/boom')
+import faker from 'faker';
+import boom from '@hapi/boom';
 
 class ProductsService {
   products: any;
@@ -11,7 +11,7 @@ class ProductsService {
 
 
   async generate() {
-    const limit = size || 10;
+    const limit = 10;
     for (let index = 0; index < limit; index++) {
       this.products.push({
         id: faker.datatype.uuid(),
@@ -23,7 +23,7 @@ class ProductsService {
     }
   }
 
-  async create(data) {
+  async create(data: any) {
     const newProduct = {
       id: faker.datatype.uuid(),
       ...data
@@ -32,23 +32,23 @@ class ProductsService {
     return newProduct;
   }
 
-  async find() {
+  async get() {
     return this.products;
   }
 
-  async findOne(id) {
-    const product = this.products.find(item => item.id === id)
-    if(!product){
+  async findOne(id: any) {
+    const product = this.products.find((item: { id: any; }) => item.id === id)
+    if (!product) {
       throw boom.notFound('product not found');
     }
-    if(product.isBlock){
+    if (product.isBlock) {
       throw boom.conflict('product is block');
     }
     return product;
   }
 
-  async update(id, changes) {
-    const index = this.products.findIndex(item => item.id === id);
+  async update(id: any, changes: any) {
+    const index = this.products.findIndex((item: { id: any; }) => item.id === id);
     if (index === -1) {
       throw boom.notFound('product not found');
     }
@@ -60,16 +60,14 @@ class ProductsService {
     return this.products[index];
   }
 
-
-  async delete(id) {
-    const index = this.products.findIndex(item => item.id === id);
+  async delete(id: any) {
+    const index = this.products.findIndex((item: { id: any; }) => item.id === id);
     if (index === -1) {
       throw boom.notFound('product not found');
     }
     this.products.splice(index, 1);
     return { id };
   }
-
 
 }
 
