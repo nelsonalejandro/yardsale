@@ -1,18 +1,17 @@
 import express from 'express';
-import { nextTick } from 'process';
 const router = express.Router();
 
 const ProductService = require('./../services/product.service');
 const service = new ProductService();
 
-const { createProductSchema, updateProductSchema, getProductSchema } = require('./../schemas/product.schema')
+const { createProductSchema, updateProductSchema, getProductSchema, queryProductSchema } = require('./../schemas/product.schema')
 const validatorHandler = require('./../middlewares/validator.handler');
 
 
 
-router.get('/', async (req: any, res: any, next: any) => {
+router.get('/', validatorHandler(queryProductSchema,'query'), async (req: any, res: any, next: any) => {
   try {
-    const products = await service.get();
+    const products = await service.find(req.query);
     res.json(products);
   } catch (error) {
     next(error)
