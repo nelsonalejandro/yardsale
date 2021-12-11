@@ -13,8 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
 const CategoryService = require('./../services/category.service');
 const validatorHandler = require('./../middlewares/validator.handler');
+const { checkRoles } = require('./../middlewares/auth.handler');
 const { createCategorySchema, updateCategorySchema, getCategorySchema } = require('./../schemas/category.schema');
 const router = express_1.default.Router();
 const service = new CategoryService();
@@ -37,7 +39,7 @@ router.get('/:id', validatorHandler(getCategorySchema, 'params'), (req, res, nex
         next(error);
     }
 }));
-router.post('/', validatorHandler(createCategorySchema, 'body'), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/', passport_1.default.authenticate('jwt', { session: false }), checkRoles('admin'), validatorHandler(createCategorySchema, 'body'), (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
         const newCategory = yield service.create(body);

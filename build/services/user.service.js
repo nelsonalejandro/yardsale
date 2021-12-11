@@ -13,12 +13,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("@hapi/boom"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const { models } = require('./../libs/sequelize');
 class UserService {
     constructor() { }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newUser = yield models.User.create(data);
+            const hash = yield bcrypt_1.default.hash(data.password, 10);
+            const newUser = yield models.User.create(Object.assign(Object.assign({}, data), { password: hash }));
+            delete newUser.dataValues.password;
             return newUser;
         });
     }
@@ -26,6 +29,14 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             const rta = yield models.User.findAll({
                 include: ['customer']
+            });
+            return rta;
+        });
+    }
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const rta = yield models.User.findOne({
+                where: { email }
             });
             return rta;
         });
