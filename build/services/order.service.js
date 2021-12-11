@@ -17,6 +17,22 @@ const { models } = require('./../libs/sequelize');
 class OrderService {
     constructor() {
     }
+    findByUser(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const orders = yield models.Order.findAll({
+                where: {
+                    '$customer.user.id$': userId
+                },
+                include: [
+                    {
+                        association: 'customer',
+                        include: ['user']
+                    }
+                ]
+            });
+            return orders;
+        });
+    }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const newOrder = yield models.Order.create(data);

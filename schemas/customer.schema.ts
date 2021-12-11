@@ -16,11 +16,11 @@ const createCustomerSchema = Joi.object({
   name: namecustomer.required(),
   lastName: lastName.required(),
   phone: phone.required(),
-  userId: userId.required()
-  /* user: Joi.object({
+  //userId: userId.required()
+  user: Joi.object({
     email: email.required(),
     password: password.required()
-  }).required() */
+  }).required()
 });
 
 const updateCustomerSchema = Joi.object({

@@ -7,17 +7,30 @@ class OrderService {
   constructor() {
   }
 
+  async findByUser(userId: any) {
+    const orders = await models.Order.findAll({
+      where: {
+        '$customer.user.id$': userId
+      },
+      include: [
+        {
+          association: 'customer',
+          include: ['user']
+        }
+      ]
+    });
+    return orders;
+  }
   async create(data: any) {
     const newOrder = await models.Order.create(data);
     return newOrder;
   }
-
   async addItem(data: any) {
     const findProductStock = await models.Product.findByPk(data.productId);
     if (findProductStock == null) {
       throw boom.notFound('product not found');
     } else {
-      if(findProductStock.stock<data.cuantity){
+      if (findProductStock.stock < data.cuantity) {
 
         throw boom.badRequest(`no stock, max cuantity for this product is ${findProductStock.stock}`);
       }
@@ -39,7 +52,7 @@ class OrderService {
     if (findOrder == null) {
       throw boom.notFound(`order id: ${id} not found`);
     } else {
-      const rta = await findOrder.update({"state":data});
+      const rta = await findOrder.update({ "state": data });
       return rta;
     }
   }

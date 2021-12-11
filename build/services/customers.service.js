@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const boom_1 = __importDefault(require("@hapi/boom"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const { models } = require('../libs/sequelize');
 class CustomerService {
     constructor() { }
@@ -35,9 +36,12 @@ class CustomerService {
     }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newCustomer = yield models.Customer.create(data, {
+            const hash = yield bcrypt_1.default.hash(data.user.password, 10);
+            const newData = Object.assign(Object.assign({}, data), { user: Object.assign(Object.assign({}, data.user), { password: hash }) });
+            const newCustomer = yield models.Customer.create(newData, {
                 include: ['user']
             });
+            delete newCustomer.dataValues.user.dataValues.password;
             return newCustomer;
         });
     }
