@@ -1,5 +1,5 @@
 import boom from '@hapi/boom';
-import { query } from 'express';
+/* import { query } from 'express'; */
 import { Op } from 'sequelize'
 const { models } = require('../libs/sequelize');
 
